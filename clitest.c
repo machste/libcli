@@ -13,7 +13,6 @@
 #include <signal.h>
 #include <stdlib.h>
 #include <string.h>
-#include <strings.h>
 #include <unistd.h>
 
 #include "libcli.h"
@@ -119,7 +118,7 @@ int cmd_config_int(struct cli_def *cli, UNUSED(const char *command), char *argv[
   if (strcmp(argv[0], "?") == 0)
     cli_print(cli, "  test0/0");
 
-  else if (strcasecmp(argv[0], "test0/0") == 0)
+  else if (strcmp(argv[0], "test0/0") == 0)
     cli_set_configmode(cli, MODE_CONFIG_INT, "test");
   else
     cli_print(cli, "Unknown interface %s", argv[0]);
@@ -150,8 +149,8 @@ int cmd_context(struct cli_def *cli, UNUSED(const char *command), UNUSED(char *a
 }
 
 int check_auth(const char *username, const char *password) {
-  if (strcasecmp(username, "fred") != 0) return CLI_ERROR;
-  if (strcasecmp(password, "nerk") != 0) return CLI_ERROR;
+  if (strcmp(username, "fred") != 0) return CLI_ERROR;
+  if (strcmp(password, "nerk") != 0) return CLI_ERROR;
   return CLI_OK;
 }
 
@@ -165,7 +164,7 @@ int regular_callback(struct cli_def *cli) {
 }
 
 int check_enable(const char *password) {
-  return !strcasecmp(password, "topsecret");
+  return !strcmp(password, "topsecret");
 }
 
 int idle_timeout(struct cli_def *cli) {
@@ -308,7 +307,7 @@ int side_length_validator(struct cli_def *cli, const char *name, const char *val
 }
 
 int transparent_validator(struct cli_def *cli, const char *name, const char *value) {
-  return strcasecmp("transparent", value) ? CLI_ERROR : CLI_OK;
+  return strcmp("transparent", value) ? CLI_ERROR : CLI_OK;
 }
 
 int check1_validator(struct cli_def *cli, UNUSED(const char *name), UNUSED(const char *value)) {
