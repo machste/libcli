@@ -1114,10 +1114,6 @@ int cli_loop(struct cli_def *cli, int sockfd) {
   // Set the last action now so we don't time immediately
   if (cli->idle_timeout) time(&cli->last_action);
 
-  // Start off in unprivileged mode
-  cli_set_privilege(cli, PRIVILEGE_UNPRIVILEGED);
-  cli_set_configmode(cli, MODE_EXEC, NULL);
-
   // No auth required?
   if (!cli->users && !cli->auth_callback) cli->state = STATE_NORMAL;
 
