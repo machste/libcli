@@ -2839,7 +2839,7 @@ void cli_free_comphelp(struct cli_comphelp *comphelp) {
 
 static int cli_int_locate_command(struct cli_def *cli, struct cli_command *commands, int command_type, int start_word,
                                   struct cli_pipeline_stage *stage) {
-  struct cli_command *c, *again_config = NULL, *again_any = NULL;
+  struct cli_command *c, *again_any = NULL;
   int c_words = stage->num_words;
 
   for (c = commands; c; c = c->next) {
@@ -2896,9 +2896,6 @@ static int cli_int_locate_command(struct cli_def *cli, struct cli_command *comma
         rc = stage->status;
       }
       return rc;
-    } else if (cli->mode > MODE_CONFIG && c->mode == MODE_CONFIG) {
-      // Command matched but from another mode, remember it if we fail to find correct command
-      again_config = c;
     } else if (c->mode == MODE_ANY) {
       // Command matched but for any mode, remember it if we fail to find correct command
       again_any = c;
@@ -2906,10 +2903,6 @@ static int cli_int_locate_command(struct cli_def *cli, struct cli_command *comma
   }
 
   // Drop out of config submode if we have matched command on MODE_CONFIG
-  if (again_config) {
-    c = again_config;
-    goto AGAIN;
-  }
   if (again_any) {
     c = again_any;
     goto AGAIN;
